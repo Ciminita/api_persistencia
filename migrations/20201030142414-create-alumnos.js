@@ -1,7 +1,4 @@
 'use strict';
-
-const { sequelize } = require("../models");
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('alumnos', {
@@ -14,11 +11,12 @@ module.exports = {
       nombre: {
         type: Sequelize.STRING
       },
-
       apellido: {
-        type: sequelize.STRING
+        type: Sequelize.STRING
       },
-
+      id_carrera: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

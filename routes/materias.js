@@ -6,7 +6,12 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.materias
     .findAll({
-      attributes: ["id", "nombre", "id_carrera"]
+      attributes: ["id", "nombre", "id_carrera"],
+      include: [{
+        as: 'Carrera-Relacionada',
+        model: models.carrera,
+        attributes: ['id', 'nombre']
+      }]
     })
     .then(materias => res.send(materias))
     .catch(() => res.sendStatus(500));
@@ -31,7 +36,7 @@ const findMateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materias
     .findOne({
       attributes: ["id", "nombre", "id_carrera"],
-      where: { id }
+      where: { id },
     })
     .then(materias => (materias ? onSuccess(materias) : onNotFound()))
     .catch(() => onError());
@@ -77,6 +82,20 @@ router.delete("/:id", (req, res) => {
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
   });
+});
+
+router.patch("/", (req, res) => {
+  console.log("Esto es un mensaje para ver en consola");
+  models.materias
+    .findAll({
+      attributes: ["id", "nombre", "id_carrera"],
+      include:[{as: 'Carrera-Relacionada',
+      model: models.carrera, 
+      attributes: ['id', 'nombre']}],
+      limit: 2
+    })
+    .then(materias => res.send(materias))
+    .catch(() => res.sendStatus(500));
 });
 
 module.exports = router;
